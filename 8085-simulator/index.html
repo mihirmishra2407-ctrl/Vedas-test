@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>VEDAS 8085 Simulator</title>
+	<!-- Explicit reference link targeting your custom pitch-black stylesheet -->
+	<link rel="stylesheet" href="CSS/simulatorAnimator.css">
+</head>
+<body>
+<div class="app">
+	<header class="top">
+		<div class="brand"><span class="chip"></span><div>VEDAS 8085<small>INSTRUCTION LABORATORY</small></div></div>
+		<div class="top-actions">
+			<button id="examples">Examples</button>
+			<button id="save">Save</button>
+			<button id="open">Open</button>
+			<button id="help">Help</button>
+		</div>
+		<div class="ready"><i></i>simulator ready</div>
+	</header>
+	
+	<div class="body">
+		<!-- LEFT WORKSPACE NAVIGATION SIDEBAR -->
+		<aside class="side">
+			<div class="label">Workspace</div>
+			<div class="file"><strong>main.asm</strong><span>8085 SOURCE · <span id="lineCount">6</span> LINES</span></div>
+			<div class="label">Program outline</div>
+			<div class="tree">
+				<button class="active" onclick="openSys()">⌄ ◈ &nbsp; main.asm</button>
+				<!-- Binds your buttons instantly to the hidden data popup loops -->
+	<button onclick="openMemoryMapPopup()">› ▦ &nbsp; memory map</button>
+	<button onclick="openIoPortsPopup()">› ◉ &nbsp; I/O ports</button>
+			</div>
+			<div class="label">Lab tools</div>
+			<div class="tree">
+				<!-- Hardwired functional element IDs mapped explicitly to separate JS triggers -->
+				<button id="ref">{} &nbsp; instruction reference</button>
+				<button id="shortcuts">⌨ &nbsp; shortcuts</button>
+				<button id="settings">⚙ &nbsp; settings</button>
+			</div>
+			<div class="hint">Click a line number to set a breakpoint. The current instruction is highlighted in lime.</div>
+		</aside>
+		
+		<!-- CENTRAL DESIGN CANVAS (Locked grid row heights stop off-screen layout pushing) -->
+		<main class="main" style="display: grid; grid-template-rows: 46px 1fr 42px; height: 100%; min-height: 0; max-height: 100%; overflow: hidden;">
+			<!-- 1. Top Transport Toolbar -->
+			<div class="toolbar" style="height: 46px; display: flex; align-items: center; border-bottom: 1px solid var(--line); padding: 0 16px; gap: 14px;">
+				<div class="tab">◈ &nbsp; main.asm &nbsp; ×</div>
+				<div class="transport" style="display: flex; gap: 6px;">
+					<button class="btn primary" id="run">▶ Run</button>
+					<button class="btn" id="step">▷ Step</button>
+					<button class="btn" id="pause">Ⅱ Pause</button>
+					<button class="btn danger" id="stop">■ Stop</button>
+					<button class="btn" id="reset">↻ Reset</button>
+				</div>
+				<span style="color: var(--muted);">|</span>
+				<span id="assemblyState">No syntax errors</span>
+				<div class="error" id="error" style="margin-left: auto;"></div>
+			</div>
+			
+			<!-- 2. Scroll-Bound Code Textarea Frame -->
+			<div class="editor" style="grid-row: 2; display: grid; grid-template-columns: 48px 1fr; min-height: 0; max-height: 100%; overflow: hidden;">
+				<div class="numbers" id="numbers" style="overflow-y: hidden; height: 100%;"></div>
+				<textarea id="code" spellcheck="false" style="height: 100%; max-height: 100%; resize: none; overflow-y: auto; display: block; box-sizing: border-box; margin: 0; border: 0; outline: 0; padding: 17px 18px;">; Add two 8-bit values and store the result
+MVI A, 2AH
+MVI B, 18H
+ADD B
+STA 2050H
+HLT</textarea>
+			</div>
+			
+			<!-- 3. Dynamic Footer Metadata Line -->
+			<div class="bottom" style="height: 42px; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; padding: 0 14px;">
+				<div class="status" id="status">○ READY · select an instruction</div>
+				<span class="metrics" id="metrics">0 T-states &nbsp; · &nbsp; 0 instructions</span>
+			</div>
+		</main>
+		
+		<!-- RIGHT DIAGNOSTIC REGISTRY SIDEBAR -->
+		<aside class="inspect">
+			<section class="panel"><h3>Registers · 8 bit</h3><div class="regs" id="regs"></div></section>
+			<section class="panel"><h3>Flags · PSW</h3><div class="flags" id="flags"></div></section>
+			<section class="panel"><h3>Memory viewer</h3><div class="memory-head"><span>ADDRESS</span><span>VALUE</span><span>NOTE</span></div><div id="memory"></div></section>
+			<section class="panel"><h3>Call stack</h3><div class="stack"><span>MAIN BASE</span><span>FFFFH</span></div></section>
+			<section class="panel"><h3>I/O visibility</h3><div class="activity" id="io">No port activity yet.</div></section>
+		</aside>
+	</div>
+</div>
+
+<!-- STANDALONE INTERACTIVE FLOATING POPUP DIALOG -->
+<div class="modal" id="modal">
+	<div class="dialog">
+		<h2 id="modalTitle"></h2>
+		<div id="modalBody"></div>
+		<button class="btn" id="close" style="margin-top: 14px;">Close</button>
+	</div>
+</div>
+
+<!-- ============================================================================ -->
+
+<!-- SYSTEM POPUP FOR HIDDEN DIAGNOSTICS -->
+<div id="hiddenOverlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 99999; backdrop-filter: blur(4px); font-family: monospace;">
+    <div style="background: #0a0a0a; border: 1px solid #333; border-radius: 6px; width: min(450px, 90vw); padding: 20px; box-shadow: 0 20px 80px #000; color: #e5e5e5;">
+        <h2 id="hiddenTitle" style="margin: 0 0 12px; color: #4cc9f0; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 6px; letter-spacing: 0.5px;"></h2>
+        
+        <!-- Live hidden metrics scroll box -->
+        <div id="hiddenContent" style="max-height: 240px; overflow-y: auto; font-size: 12px; line-height: 1.6;"></div>
+        
+        <button onclick="document.getElementById('hiddenOverlay').style.display='none'" style="margin-top: 16px; background: #111; border: 1px solid #333; color: #fff; border-radius: 4px; padding: 8px 12px; cursor: pointer; font-size: 11px; font-family: monospace;">Dismiss</button>
+    </div>
+</div>
+
+<!-- ============================================================================
+     CRITICAL REPAIR: LINK ALL SEPARATE INDEPENDENT RUNTIME PROCESSING ENGINES
+     ============================================================================ -->
+<script src="JS/simulatorEngine.js"></script>
+<script src="JS/instructionsEngine.js"></script>
+<script src="JS/settingsEngine.js"></script>
+<script src="JS/shortCutEngine.js"></script>
+<script>
+// Open popup container helper
+function showHiddenModal(title, html) {
+    document.getElementById('hiddenTitle').textContent = title;
+    document.getElementById('hiddenContent').innerHTML = html;
+    document.getElementById('hiddenOverlay').style.display = 'flex';
+}
+
+// 1. RUN MEMORY MAP (Extracts active address data hidden inside "mem")
+function openMemoryMapPopup() {
+    let activeAddresses = Object.entries(typeof mem !== 'undefined' ? mem : {});
+    
+    let htmlRows = activeAddresses.map(([address, val]) => {
+        let hexAddr = parseInt(address).toString(16).toUpperCase().padStart(4, '0') + 'H';
+        let hexVal = val.toString(16).toUpperCase().padStart(2, '0') + 'H';
+        return `<div style="display:flex; justify-content:space-between; border-bottom:1px solid #1a1a1a; padding:4px 0;">
+            <span style="color:#4cc9f0;">📍 Address: ${hexAddr}</span>
+            <span style="color:#a9e34b;">Data: ${hexVal}</span>
+        </div>`;
+    }).join('');
+
+    let content = htmlRows || '<div style="color:#666; text-align:center; padding:10px;">No memory spaces written yet.</div>';
+    showHiddenModal("Hidden Data RAM Allocation Map", content);
+}
+
+// 2. RUN I/O PORTS (Extracts signal logs hidden inside "simulatedHardwarePortRegistry")
+function openIoPortsPopup() {
+    let activePorts = Object.entries(typeof simulatedHardwarePortRegistry !== 'undefined' ? simulatedHardwarePortRegistry : {});
+    
+    let htmlRows = activePorts.map(([port, val]) => {
+        let hexVal = val.toString(16).toUpperCase().padStart(2, '0') + 'H';
+        return `<div style="display:flex; justify-content:space-between; border-bottom:1px solid #1a1a1a; padding:4px 0;">
+            <span>Channel: [Port ${port.toUpperCase()}]</span>
+            <b style="color:#ff9f43;">Signal: ${hexVal}</b>
+        </div>`;
+    }).join('');
+
+    let content = htmlRows || '<div style="color:#666; text-align:center; padding:10px;">No I/O port traffic captured yet.</div>';
+    showHiddenModal("Hidden Peripheral I/O Bus Traffic", content);
+}
+</script>
+
+</body>
+</html>
