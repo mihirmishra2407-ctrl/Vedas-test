@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>VEDAS Code Lab</title>
+
+
+<!-- =========================================================
+     CODEMIRROR 5.65.16
+========================================================= -->
+
+<!-- CodeMirror Core CSS -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css"
+>
+
+<!-- CodeMirror Theme -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css"
+>
+
+<!-- CodeMirror Core -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js">
+</script>
+
+<!-- Active Line -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js">
+</script>
+
+<!-- Python -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js">
+</script>
+
+<!-- C / C++ / Java -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js">
+</script>
+
+<!-- JavaScript -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js">
+</script>
+
+<!-- XML -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js">
+</script>
+
+<!-- CSS -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js">
+</script>
+
+<!-- HTML + CSS + JS -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js">
+</script>
+
+<!-- VEDAS Code Lab CSS -->
+<link
+    rel="stylesheet"
+    href="CSS/vedasClAnimator.css"
+>
+
+
+</head>
+
+<body>
+
+
+<div
+    class="themeFlash"
+    id="themeFlash"
+></div>
+
+
+<div class="app">
+
+
+<!-- =======================================================
+     TITLE BAR
+======================================================= -->
+
+<header class="titlebar">
+
+    <div class="brand">
+
+        <div class="brandLogo">
+            V
+        </div>
+
+        <div class="brandName">
+            VEDAS
+        </div>
+
+        <div class="brandVersion">
+            CODE LAB v6.1
+        </div>
+
+    </div>
+
+
+    <div class="titlebarRight">
+
+        <button
+            id="themeButton"
+            type="button"
+            title="Switch theme"
+        >
+            ☀
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =======================================================
+     MENU
+======================================================= -->
+
+<nav class="menubar">
+
+   
+<div class="menuItem fileMenu" data-menu="file">
+
+    FILE
+
+    <!-- FILE DROPDOWN -->
+    <div class="dropdownMenu">
+
+        <div class="dropdownItem" data-action="openWorkspace">
+            Open Workspace
+        </div>
+
+        <div class="dropdownItem" data-action="refreshWorkspace">
+            Refresh Workspace
+        </div>
+
+        <div class="dropdownSeparator"></div>
+
+        <div class="dropdownItem" data-action="newFile">
+            New File
+        </div>
+
+        <div class="dropdownItem" data-action="newFolder">
+            New Folder
+        </div>
+
+        <div class="dropdownSeparator"></div>
+
+        <div class="dropdownItem" data-action="saveFile">
+            Save File
+        </div>
+
+        <div class="dropdownItem" data-action="rename">
+            Rename
+        </div>
+
+        <div class="dropdownItem" data-action="delete">
+            Delete
+        </div>
+
+        <div class="dropdownSeparator"></div>
+
+        <div class="dropdownItem" data-action="closeWorkspace">
+            Close Workspace
+        </div>
+
+    </div>
+
+</div>
+
+    <div class="editMenu">
+
+    <div class="menuItem">
+        EDIT
+    </div>
+
+    <div class="dropdownMenu">
+
+        <button class="dropdownItem" data-action="undo">
+            Undo
+            <span class="shortcut">Ctrl+Z</span>
+        </button>
+
+        <button class="dropdownItem" data-action="redo">
+            Redo
+            <span class="shortcut">Ctrl+Y</span>
+        </button>
+
+        <div class="dropdownSeparator"></div>
+
+        <button class="dropdownItem" data-action="cut">
+            Cut
+            <span class="shortcut">Ctrl+X</span>
+        </button>
+
+        <button class="dropdownItem" data-action="copy">
+            Copy
+            <span class="shortcut">Ctrl+C</span>
+        </button>
+
+        <button class="dropdownItem" data-action="paste">
+            Paste
+            <span class="shortcut">Ctrl+V</span>
+        </button>
+
+        <button class="dropdownItem" data-action="selectAll">
+            Select All
+            <span class="shortcut">Ctrl+A</span>
+        </button>
+
+        <div class="dropdownSeparator"></div>
+
+        <button class="dropdownItem" data-action="find">
+            Find
+            <span class="shortcut">Ctrl+F</span>
+        </button>
+
+        <button class="dropdownItem" data-action="replace">
+            Replace
+            <span class="shortcut">Ctrl+H</span>
+        </button>
+
+        <button class="dropdownItem" data-action="gotoLine">
+            Go to Line
+            <span class="shortcut">Ctrl+G</span>
+        </button>
+
+        <div class="dropdownSeparator"></div>
+
+        <button class="dropdownItem" data-action="save">
+            Save
+            <span class="shortcut">Ctrl+S</span>
+        </button>
+
+    </div>
+
+</div>
+
+    <div class="viewMenu">
+
+    <div class="menuItem">
+        VIEW
+    </div>
+
+    <div class="dropdownMenu">
+
+        <button
+            class="dropdownItem"
+            data-action="toggleSidebar"
+        >
+            Toggle Sidebar
+        </button>
+
+        <button
+            class="dropdownItem"
+            data-action="toggleTerminal"
+        >
+            Toggle Terminal
+        </button>
+
+        <button
+            class="dropdownItem"
+            data-action="toggleIO"
+        >
+            Toggle I/O
+        </button>
+
+        <div class="dropdownSeparator"></div>
+
+        <button
+            class="dropdownItem"
+            data-action="zoomIn"
+        >
+            Zoom In
+            <span class="shortcut">Ctrl + +</span>
+        </button>
+
+        <button
+            class="dropdownItem"
+            data-action="zoomOut"
+        >
+            Zoom Out
+            <span class="shortcut">Ctrl + -</span>
+        </button>
+
+        <button
+            class="dropdownItem"
+            data-action="resetZoom"
+        >
+            Reset Zoom
+            <span class="shortcut">Ctrl + 0</span>
+        </button>
+
+        <div class="dropdownSeparator"></div>
+
+        <button
+            class="dropdownItem"
+            data-action="fullScreen"
+        >
+            Full Screen
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =======================================================
+     VEDAS CODE LAB - MOUNTED TOOLS COMPONENT (PART 1)
+======================================================= -->
+<div class="toolsMenu">
+
+    <!-- Isolated Click Node Area matching your CSS layout exactly -->
+    <button class="menuItem" id="toolsTitleMenuButton" type="button">
+        TOOLS
+    </button>
+
+    <div class="dropdownMenu">
+
+        
+
+        <div class="dropdownItem" data-action="clearEditor">
+            Clear Editor
+        </div>
+
+        <div class="dropdownItem" data-action="clearTerminal">
+            Clear Terminal
+        </div>
+
+        <div class="dropdownSeparator"></div>
+
+        <div class="dropdownItem" data-action="console">
+            Developer Console
+        </div>
+
+        <div class="dropdownItem" data-action="diagnostics">
+            Diagnostics
+        </div>
+
+        <div class="dropdownSeparator"></div>
+
+        <div class="dropdownItem" data-action="settings">
+            Settings
+        </div>
+
+        <div class="dropdownSeparator"></div>
+
+        <div class="dropdownItem" data-action="reload">
+            Reload Code Lab
+        </div>
+
+    </div>
+
+</div>
+
+
+
+    <div
+        class="menuItem"
+        data-menu="help"
+    >
+        Help
+    </div>
+	
+	<div
+        class="menuItem"
+        data-menu="run"
+    >
+        {/} Run
+    </div>
+	
+	<div
+        class="menuItem"
+        data-menu="format"
+    >
+        {/.} Format
+    </div>
+	
+</nav>
+
+
+<!-- =======================================================
+     TOOLBAR
+======================================================= -->
+
+<div class="toolbar">
+
+
+    <select id="language">
+        <option value="python">Python 3</option>
+        <option value="c">C</option>
+        <option value="cpp">C++</option>
+        <option value="java">Java</option>
+        <option value="javascript">JavaScript</option>
+        <option value="web">HTML + CSS + JS</option>
+    </select>
+
+
+
+    <div class="toolbarGroup">
+
+        <button
+            class="toolButton"
+            id="clearButton"
+            type="button"
+        >
+            CLEAR
+        </button>
+
+
+        <button
+            class="toolButton"
+            id="runButton"
+            type="button"
+        >
+            ▶ RUN
+        </button>
+		
+		<div class="sidebar" style="width: 300px;" id="ai_control" hidden>	
+		<!-- Interface Control Actions -->
+            <div style="display: flex; gap: 8px;">
+                <button type="button" id="ved-ask-btn" style="flex: 1; height: 20px; background: #062445; color: white; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; transition: background 0.2s; font-family: Courier;">ASK AI</button>
+                <button onclick="copytomain()" style="flex: 1; height: 20px; background: #062445; color: white; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; transition: background 0.2s; font-family: Courier;">{/c}COPY CODE</button>
+            </div>
+		</div>
+
+    </div>
+
+
+    <div class="toolbarSpacer"></div>
+
+
+    <div class="toolbarGroup">
+
+        <button
+            class="toolButton"
+            id="siteButton"
+            type="button"
+        >
+            ◀ SITE
+        </button>
+
+
+        <button
+            class="toolButton"
+            id="codeButton"
+            type="button"
+        >
+            {/} CODE
+        </button>
+
+
+        <button
+            class="toolButton"
+            id="ioButton"
+            type="button"
+        >
+            ▶ I/O
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =======================================================
+     WORKSPACE
+======================================================= -->
+
+<div class="workspace">
+
+
+<!-- =======================================================
+     SIDEBAR
+======================================================= -->
+
+<aside class="sidebar">
+
+
+    <div class="sidebarTitle">
+        WORKSPACE
+    </div>
+
+
+    <div
+        class="sideItem active"
+        data-side="code"
+    >
+        ◇ Code Editor
+    </div>
+
+
+    <div
+        class="sideItem"
+        data-side="project"
+    >
+        ▣ Project
+    </div>
+
+
+    <div
+        class="sideItem"
+        data-side="files"
+    >
+        ▤ Files
+    </div>
+
+
+    <div
+        class="sideItem"
+        data-side="settings"
+    >
+        ⚙ Settings
+    </div>
+
+	<div
+        class="sidebarTitle"
+        style="margin-top:28px;"	
+    >
+        VED AI
+    </div>
+
+	<div class="sideItem" onclick="toggleAI()"
+	style="overflow: auto; height: auto; background: linear-gradient(45deg, #0C2E30, #1B7C82); background-size: cover;"
+		 onmouseover="this.style.background='linear-gradient(45deg, #124346, #24A2AA)'" 
+		onmouseout="this.style.background='linear-gradient(45deg, #0C2E30, #1B7C82)'; this.style.transform='scale(1)'" 
+		onmousedown="this.style.background='linear-gradient(45deg, #06191A, #135A5E)'; this.style.transform='scale(0.96)'" 
+		onmouseup="this.style.background='linear-gradient(45deg, #124346, #24A2AA)'; this.style.transform='scale(1)'"
+		onclick="window.open('8085-simulator/index.html')"
+	>✨ AI ⇆</div>
+
+    <div
+        class="sidebarTitle"
+        style="margin-top:28px;"	
+    >
+        VEDAS SITE & TOOLS
+    </div>
+
+
+    <div
+        class="sideItem"
+        id="sideSite"
+		style="overflow: auto; height: auto; background: linear-gradient(45deg, #0C2E30, #1B7C82); background-size: cover;"
+		 onmouseover="this.style.background='linear-gradient(45deg, #124346, #24A2AA)'" 
+		onmouseout="this.style.background='linear-gradient(45deg, #0C2E30, #1B7C82)'; this.style.transform='scale(1)'" 
+		onmousedown="this.style.background='linear-gradient(45deg, #06191A, #135A5E)'; this.style.transform='scale(0.96)'" 
+		onmouseup="this.style.background='linear-gradient(45deg, #124346, #24A2AA)'; this.style.transform='scale(1)'"
+		onclick="window.open('8085-simulator/index.html')"
+    >
+        ◀ VEDAS Website
+    </div>
+	
+	<div
+        class="sideItem"
+        style="overflow: auto; height: auto; background: linear-gradient(45deg, #0C2E30, #1B7C82); background-size: cover;"
+		 onmouseover="this.style.background='linear-gradient(45deg, #124346, #24A2AA)'" 
+		onmouseout="this.style.background='linear-gradient(45deg, #0C2E30, #1B7C82)'; this.style.transform='scale(1)'" 
+		onmousedown="this.style.background='linear-gradient(45deg, #06191A, #135A5E)'; this.style.transform='scale(0.96)'" 
+		onmouseup="this.style.background='linear-gradient(45deg, #124346, #24A2AA)'; this.style.transform='scale(1)'"
+		onclick="window.open('8085-simulator/index.html')"
+    >
+        ◀ VEDAS 8085
+    </div> 
+
+
+	<div
+        class="sidebarTitle"
+        style="margin-top:28px;"
+    >
+        WOKSPACE AS FOLDER
+    </div>
+    <!-- Your existing VEDAS UI -->
+
+    <div id="project">
+
+        <h3 id="projectName" style="font-family: Courier New;">
+		    No Workspace
+		</h3>
+
+        <div id="projectTree" style="font-family: Courier New;"></div>
+
+    </div>
+
+</aside>
+			
+<aside class="sidebar" style="width: 35%;" id="ai" hidden>
+
+ <!-- CENTRAL WORKSPACE PANELS -->
+    <div class="workspace" style="display: flex; width: 100%; height: calc(100vh - 40px); overflow: hidden; background: #111;">
+        
+        
+
+        <!-- RIGHT PANEL: VED System AI Workspace Sidebar -->
+        <div class="sidebar" style="width: 400px; background: #0d0d0d; border-left: 1px solid #222; display: flex; flex-direction: column; padding: 12px; flex-shrink: 0; box-sizing: border-box; font-family: Courier New;">
+            
+			
+			
+            <div style="color: #55d187; font-size: 12px; font-weight: 900; margin-bottom: 12px; letter-spacing: 1.5px;">VED GENERAL INTELLIGENCE</div>
+            
+            <!-- Chat History Frame Window Area -->
+            <div id="ved-chat" style="flex: 1; background: #050505; border: 1px solid #222; border-radius: 6px; padding: 12px; overflow-y: auto; margin-bottom: 12px; font-size: 13px; color: #ccc; line-height: 1.5; box-sizing: border-box;">
+                <div style="color: #144D0E; font-weight: bold; margin-bottom: 6px; font-family: Courier New;">[SYSTEM] General Engine Ready. Support active for Python, C++, Java, HTML/CSS, and 8085 Assembly.</div>
+            </div>
+
+            <!-- AI CODE PREVIEW (Holds Only Raw Code Strings) -->
+            <div style="color: #666; font-size: 10px; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px;">AI EXTRACTED CODE</div>
+            <textarea id="AI_code" readonly placeholder="Extracted code blocks will stream here..." style="width: 100%; height: 150px; background: #111; color: #55d187; border: 1px solid #333; border-radius: 6px; padding: 10px; font-family: 'Consolas', 'Courier New', monospace; font-size: 12px; margin-bottom: 12px; resize: none; outline: none; box-sizing: border-box;"></textarea>
+
+            <!-- Prompt User Question Input Box -->
+            <textarea id="ved-question" placeholder="Ask VED to generate or explain code logic..." style="width: 100%; height: 65px; background: #1a1a1a; color: #fff; border: 1px solid #333; border-radius: 6px; padding: 10px; font-size: 13px; resize: none; margin-bottom: 10px; outline: none; box-sizing: border-box;"></textarea>
+            
+            
+        </div>
+    </div>
+
+
+</aside>
+
+
+<!-- =======================================================
+     MAIN PANEL
+======================================================= -->
+
+<main class="mainPanel">
+
+
+    <div class="panelHeader">
+
+        <div class="panelTitle">
+            CODE
+        </div>
+
+
+        <div
+            class="panelStatus"
+            id="panelStatus"
+        >
+            Python 3
+        </div>
+
+    </div>
+
+
+<!-- =======================================================
+     CODE
+======================================================= -->
+
+<div id="coding">
+
+
+    <div id="editorWrapper">
+
+        <textarea
+            id="code"
+            spellcheck="false"
+        >print("Curiosity wants have the way, welcome to Python 3! by VEDAS - CODE LAB.")</textarea>
+
+    </div>
+
+
+<!-- =======================================================
+     WEB OUTPUT
+======================================================= -->
+
+<div
+    id="webPreviewArea"
+    hidden
+>
+
+    <div class="sectionTitle">
+        WEB OUTPUT
+    </div>
+
+
+    <iframe
+        id="webPreview"
+        sandbox="allow-scripts allow-forms allow-modals"
+    ></iframe>
+
+</div>
+
+
+</div>
+
+
+<!-- =======================================================
+     I/O
+======================================================= -->
+
+<div
+    id="io"
+    hidden
+>
+
+
+    <div class="inputArea">
+
+        <div class="sectionTitle">
+            PROGRAM INPUT
+        </div>
+
+
+        <textarea
+            id="programInput"
+            spellcheck="false"
+            placeholder="Enter program input here..."
+        ></textarea>
+
+    </div>
+
+
+    <div id="terminal">
+
+        <div class="sectionTitle">
+            TERMINAL
+        </div>
+
+
+        <div id="terminalScreen">
+
+            <pre id="terminalOutput">VEDAS CODE LAB v6.1
+Ready.</pre>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+</main>
+
+</div>
+
+
+<!-- =======================================================
+     STATUS BAR
+======================================================= -->
+
+<footer class="statusbar">
+
+    <span class="statusRight" style="margin-left: 0px; margin-right: 5%;">
+        CREATED BY MIHIR MISHRA
+    </span>
+	
+	<span id="status">
+        READY
+    </span>
+
+	
+
+    <span class="statusRight">
+        VEDAS CODE LAB • VED AI • 8085 SIMULATOR
+    </span>
+
+</footer>
+
+
+</div>
+
+
+<!-- =========================================================
+     VEDAS CODEMIRROR ENGINE
+     
+     RESPONSIBILITY:
+     ✓ Initialize CodeMirror
+     ✓ Configure CodeMirror
+     ✓ Change CodeMirror mode
+     ✓ Synchronize CodeMirror ↔ textarea
+     ✓ Editor-only shortcuts
+     ✓ Editor theme synchronization
+
+     DOES NOT:
+     ✗ Execute code
+     ✗ Call Judge0
+     ✗ Control RUN
+     ✗ Control CLEAR
+     ✗ Control I/O
+     ✗ Control sidebar
+     ✗ Control menus
+     ✗ Control navigation
+     ✗ Control application status
+========================================================= -->
+
+<!-- =========================================================
+     VEDAS ENGINE LOADING
+========================================================= -->
+
+<!-- Code Execution -->
+<script src="JS/clEngine.js"></script>
+
+<!-- VEDAS CodeMirror Engine -->
+<script src="JS/vedasEditor.js"></script>
+
+<!-- Workspace -->
+<script src="JS/projectEngine.js"></script>
+<script src="JS/fileEngine.js"></script>
+
+<!-- Editor/UI Actions -->
+<script src="JS/editEngine.js"></script>
+<script src="JS/viewEngine.js"></script>
+
+<!-- Formatting -->
+<script src="JS/formatEngine.js"></script>
+
+<!-- Tools -->
+<script src="JS/toolsEngine.js"></script>
+
+<!-- VED AI -->
+<script src="JS/vedAIEngine.js"></script>
+<script src="JS/vedInputEngine.js"></script>
+<script src="JS/vedOutputEngine.js"></script>
+
+<!-- Puter -->
+<script src="https://js.puter.com/v2/"></script>
+	
+
+    <!-- Global Application Bootswrapper Loop -->
+   
+   <script>
+// Initializes tools as soon as the DOM is interactive
+if (document.readyState === "loading") {
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") initTools();
+    });
+} else {
+    initTools();
+}
+
+function initTools() {
+    if (window.ToolsEngine && typeof window.ToolsEngine.init === "function") {
+        window.ToolsEngine.init();
+    }
+}
+
+// Intercepts formatting actions globally
+document.addEventListener("click", event => {
+    const formatButton = event.target.closest('[data-menu="format"]');
+    if (!formatButton) return;
+
+    // Stop form submittals from clearing out editor text windows
+    event.preventDefault();
+
+    const langSelect = document.getElementById("language");
+    if (!langSelect) {
+        console.warn("[VEDAS INTERFACE]: Target select dropdown '#language' was not found.");
+        return;
+    }
+
+    // Capture the value and scrub out potential layout spaces / tabs
+    const language = String(langSelect.value || "").replace(/\s+/g, "");
+
+    // Fire the central format engine pipeline
+    if (window.FormatEngine && typeof window.FormatEngine.format === "function") {
+        window.FormatEngine.format(language);
+    } else {
+        console.error("[VEDAS SYSTEM ERROR]: Central FormatEngine core module is missing.");
+    }
+});
+</script>
+	
+	<script>
+		function toggleAI() {
+			const ai = document.getElementById("ai");
+			const aiC = document.getElementById("ai_control");
+
+			// If AI is currently hidden, open it and force hide inspector
+			if (ai.hidden) {
+				ai.hidden = false;
+				aiC.hidden = false;
+			} else {
+				// If AI was already open, click closes it
+				ai.hidden = true;
+				aiC.hidden = true;
+			}
+		}
+
+		function copytomain() {
+    // 1. Grab the element containing your AI code
+    const aiOutput = document.getElementById("AI_code");
+    
+    if (!aiOutput) {
+        alert("Error: AI code element not found!");
+        return;
+    }
+
+    // 2. Get the text content (handles textareas or normal div/pre elements)
+    const textToCopy = aiOutput.value || aiOutput.innerText;
+
+    // 3. Use the modern Clipboard API to copy it instantly
+    navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+            alert("COPIED");
+        })
+        .catch(err => {
+            console.error("Could not copy text: ", err);
+        });
+}
+
+
+
+	</script>	
+</body>
+</html>
